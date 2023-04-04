@@ -1,18 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Nuevo Producto </ion-title>
+    <ion-title> {{!editMode ? 'Nuevo Producto': 'Editar Producto'}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- name: string;
-  price: number;
-  description: string;
-  photo: string;
-  calification: number;
-  category: string;
-  sku: string;
-  opinions: Opinion[]; -->
   <form>
     <ion-grid>
       <ion-row>

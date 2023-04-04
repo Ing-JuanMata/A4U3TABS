@@ -15,6 +15,13 @@ export class Tab2Page {
   constructor(private router: Router) {}
 
   goToProduct(id: string) {
-    this.router.navigateByUrl(`tabs/detalle_producto/${id}`, { replaceUrl: true});
+    this.router.navigateByUrl(`tabs/detalle_producto/${id}`, {
+      replaceUrl: true,
+    });
+  }
+  editProduct(id: string) {
+    this.router.navigateByUrl(`tabs/editar_producto/${id}`, {
+      replaceUrl: true,
+    });
   }
 }

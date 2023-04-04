@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -10,5 +11,15 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule, FormsModule, ReactiveFormsModule],
 })
 export class Tab1Page {
-  constructor() {}
+  editMode = false;
+  constructor(private activatedRoute: ActivatedRoute) {}
+
+  ionViewDidEnter() {
+    this.activatedRoute.paramMap.subscribe(params =>{
+      if(params.get('id')){
+        this.editMode = true;
+      }
+      console.log(params);
+    })
+  }
 }
