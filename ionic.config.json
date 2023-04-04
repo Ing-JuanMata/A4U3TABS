@@ -1,0 +1,7 @@
+{
+  "name": "A4U3TABS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
