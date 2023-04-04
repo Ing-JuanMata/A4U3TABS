@@ -1,7 +1,7 @@
 import { IonRatingStarsModule } from 'ion-rating-stars';
 
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, EnvironmentInjector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   AlertController,
@@ -29,7 +29,8 @@ export class Tab2Page {
     private router: Router,
     private productService: ProductService,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    public environmentInjector: EnvironmentInjector
   ) {
     this.products = this.productService.getProducts();
     this.filteredProducts = this.products;

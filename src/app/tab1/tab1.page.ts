@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EnvironmentInjector } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -34,7 +34,8 @@ export class Tab1Page {
     private productService: ProductService,
     private alertController: AlertController,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
+    public environmentInjector: EnvironmentInjector
   ) {
     this.categories = this.categoryService.getCategories();
     this.productForm = new FormGroup<ProductForm>({

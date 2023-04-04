@@ -1,7 +1,7 @@
 import { IonRatingStarsModule } from 'ion-rating-stars';
 
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EnvironmentInjector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonicModule, ToastController } from '@ionic/angular';
 
@@ -25,7 +25,8 @@ export class Tab3Page {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertController: AlertController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    public environmentInjector: EnvironmentInjector
   ) {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {

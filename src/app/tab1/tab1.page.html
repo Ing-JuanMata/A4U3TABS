@@ -10,6 +10,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
+            <ion-label position="floating">Sku</ion-label>
             <ion-input
               aria-label="Sku"
               label="Sku"
@@ -23,6 +24,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
             <ion-input
               aria-label="Nombre"
               label="Nombre"
@@ -36,6 +38,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
+            <ion-label position="floating">Precio</ion-label>
             <ion-input
               aria-label="Precio"
               label="Precio"
@@ -49,6 +52,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
+            <ion-label position="floating">Categor&iacute;a</ion-label>
             <ion-select
               aria-label="Categoria"
               label="Categoria"
@@ -68,6 +72,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
+            <ion-label position="floating">Descripci&oacute;n</ion-label>
             <ion-textarea
               aria-label="Descripción"
               label="Descripción"
@@ -81,6 +86,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
+            <ion-label position="floating">Foto</ion-label>
             <ion-input
               aria-label="Foto"
               label="Foto"
@@ -93,7 +99,11 @@
       </ion-row>
       <ion-row class="ion-justify-content-end ion-margin-horizontal">
         <ion-col size="1">
-          <ion-button color="success" (click)="!editMode? addProduct():updateProduct()" [disabled]="!productForm.valid">
+          <ion-button
+            color="success"
+            (click)="!editMode? addProduct():updateProduct()"
+            [disabled]="!productForm.valid"
+          >
             <ion-label>Guardar</ion-label>
           </ion-button>
         </ion-col>
