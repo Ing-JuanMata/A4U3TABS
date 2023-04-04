@@ -37,6 +37,9 @@ dependencies:
   '@ionic/angular':
     specifier: ^7.0.0
     version: 7.0.0(@angular/core@15.0.0)(@angular/forms@15.0.0)(@angular/router@15.0.0)(rxjs@7.5.0)(zone.js@0.11.4)
+  ion-rating-stars:
+    specifier: ^1.2.0
+    version: 1.2.0(@angular/common@15.0.0)(@angular/core@15.0.0)(@ionic/angular@7.0.0)
   ionicons:
     specifier: ^7.0.0
     version: 7.0.0
@@ -1945,7 +1948,7 @@ packages:
     dependencies:
       '@ionic/utils-terminal': 2.3.4
       debug: 4.3.4
-      tslib: 2.3.0
+      tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1955,7 +1958,7 @@ packages:
     dependencies:
       '@stencil/core': 3.2.0
       ionicons: 7.1.0
-      tslib: 2.3.0
+      tslib: 2.4.1
     dev: false
 
   /@ionic/utils-array@2.1.6:
@@ -1963,7 +1966,7 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       debug: 4.3.4
-      tslib: 2.3.0
+      tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1975,7 +1978,7 @@ packages:
       '@types/fs-extra': 8.1.2
       debug: 4.3.4
       fs-extra: 9.1.0
-      tslib: 2.3.0
+      tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1985,7 +1988,7 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       debug: 4.3.4
-      tslib: 2.3.0
+      tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1999,7 +2002,7 @@ packages:
       debug: 4.3.4
       signal-exit: 3.0.7
       tree-kill: 1.2.2
-      tslib: 2.3.0
+      tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2009,7 +2012,7 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       debug: 4.3.4
-      tslib: 2.3.0
+      tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2025,7 +2028,7 @@ packages:
       '@ionic/utils-terminal': 2.3.4
       cross-spawn: 7.0.3
       debug: 4.3.4
-      tslib: 2.3.0
+      tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2040,7 +2043,7 @@ packages:
       slice-ansi: 4.0.0
       string-width: 4.2.3
       strip-ansi: 6.0.1
-      tslib: 2.3.0
+      tslib: 2.4.1
       untildify: 4.0.0
       wrap-ansi: 7.0.0
     transitivePeerDependencies:
@@ -5358,6 +5361,19 @@ packages:
       side-channel: 1.0.4
     dev: true
 
+  /ion-rating-stars@1.2.0(@angular/common@15.0.0)(@angular/core@15.0.0)(@ionic/angular@7.0.0):
+    resolution: {integrity: sha512-9QvYCY5FL+fEP9aqcGFIxJPqfGc922GQDbKIjNFQG90iGDhANmgI2TwumlTIXWqV39HSzxqmzz917vHDq5e+mg==}
+    peerDependencies:
+      '@angular/common': ^15.0.0
+      '@angular/core': ^15.0.0
+      '@ionic/angular': ^6.4.1
+    dependencies:
+      '@angular/common': 15.0.0(@angular/core@15.0.0)(rxjs@7.5.0)
+      '@angular/core': 15.0.0(rxjs@7.5.0)(zone.js@0.11.4)
+      '@ionic/angular': 7.0.0(@angular/core@15.0.0)(@angular/forms@15.0.0)(@angular/router@15.0.0)(rxjs@7.5.0)(zone.js@0.11.4)
+      tslib: 2.4.1
+    dev: false
+
   /ionicons@7.0.0:
     resolution: {integrity: sha512-5G9gBxaUfJm0aAr/Kg5Eb/d7d+pMC65yiHjlkGATLrHSZgAzlc9l6ho0dCSdfq3wGef2QiZeNsvyChPVggfXwQ==}
     dependencies:
@@ -5917,7 +5933,7 @@ packages:
     dependencies:
       copy-anything: 2.0.6
       parse-node-version: 1.0.1
-      tslib: 2.3.0
+      tslib: 2.4.1
     optionalDependencies:
       errno: 0.1.8
       graceful-fs: 4.2.11
@@ -7397,7 +7413,7 @@ packages:
   /rxjs@7.5.7:
     resolution: {integrity: sha512-z9MzKh/UcOqB3i20H6rtrlaE/CgjLOvheWK/9ILrbhROGTweAi1BaFsTT9FbwZi5Trr1qNRs+MXkhmR06awzQA==}
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.4.1
     dev: true
 
   /safe-buffer@5.1.2:
@@ -8130,7 +8146,6 @@ packages:
 
   /tslib@2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
-    dev: true
 
   /tsutils@3.21.0(typescript@4.8.4):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
