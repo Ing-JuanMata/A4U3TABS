@@ -17,8 +17,6 @@ export interface ProductForm {
   price: FormControl<number>;
   description: FormControl<string>;
   photo: FormControl<string>;
-  calification: FormControl<number>;
   category: FormControl<string>;
   sku: FormControl<string>;
-  opinions: FormControl<Opinion[]>;
 }

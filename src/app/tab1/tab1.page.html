@@ -5,38 +5,62 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form>
+  <form [formGroup]="productForm">
     <ion-grid>
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Sku</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input
+              aria-label="Sku"
+              label="Sku"
+              labelPlacement="floating"
+              type="text"
+              formControlName="sku"
+            ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Nombre</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input
+              aria-label="Nombre"
+              label="Nombre"
+              labelPlacement="floating"
+              type="text"
+              formControlName="name"
+            ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Precio</ion-label>
-            <ion-input type="number"></ion-input>
+            <ion-input
+              aria-label="Precio"
+              label="Precio"
+              labelPlacement="floating"
+              type="number"
+              formControlName="price"
+            ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Categoria</ion-label>
-            <ion-select placeholder="Seleccione una categoria">
-              <ion-select-option>Cat1</ion-select-option>
+            <ion-select
+              aria-label="Categoria"
+              label="Categoria"
+              labelPlacement="floating"
+              placeholder="Seleccione una categoria"
+              formControlName="category"
+            >
+              <ion-select-option
+                *ngFor="let category of categories"
+                [value]="category.name"
+                >{{category.name}}</ion-select-option
+              >
             </ion-select>
           </ion-item>
         </ion-col>
@@ -44,22 +68,32 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Descripci&oacute;n</ion-label>
-            <ion-textarea autoGrow></ion-textarea>
+            <ion-textarea
+              aria-label="Descripción"
+              label="Descripción"
+              labelPlacement="floating"
+              autoGrow
+              formControlName="description"
+            ></ion-textarea>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Foto</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input
+              aria-label="Foto"
+              label="Foto"
+              labelPlacement="floating"
+              type="text"
+              formControlName="photo"
+            ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row class="ion-justify-content-end ion-margin-horizontal">
         <ion-col size="1">
-          <ion-button color="success">
+          <ion-button color="success" (click)="!editMode? addProduct():updateProduct()" [disabled]="!productForm.valid">
             <ion-label>Guardar</ion-label>
           </ion-button>
         </ion-col>

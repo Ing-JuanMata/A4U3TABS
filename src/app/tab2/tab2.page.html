@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-searchbar (ionInput)="filterProducts($event)"></ion-searchbar>
+  <ion-searchbar (ionInput)="filterProducts($event)" #search></ion-searchbar>
   <ion-grid>
     <ion-row>
       <ion-col size="4" *ngFor="let product of filteredProducts">
@@ -48,6 +48,9 @@
               <ion-row class="ion-justify-content-between">
                 <ion-button (click)="editProduct(product.sku)" fill="outline">
                   <ion-icon slot="icon-only" name="create"></ion-icon>
+                </ion-button>
+                <ion-button (click)="deleteProduct(product.sku)" color="danger" fill="outline">
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
                 </ion-button>
                 <ion-button (click)="goToProduct(product.sku)" fill="outline">
                   <ion-icon slot="icon-only" name="eye"></ion-icon>
