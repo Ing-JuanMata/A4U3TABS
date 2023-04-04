@@ -3,7 +3,7 @@ import { IonRatingStarsModule } from 'ion-rating-stars';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, ToastController } from '@ionic/angular';
 
 import { Product } from '../models/product';
 import { OpinionService } from '../services/opinion.service';
@@ -24,7 +24,8 @@ export class Tab3Page {
     private opinionService: OpinionService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
@@ -62,6 +63,9 @@ export class Tab3Page {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
+          handler: () => {
+            this.presentToast('Operación cancelada', 'warning');
+          },
         },
         {
           text: 'Añadir',
@@ -72,27 +76,84 @@ export class Tab3Page {
               data.name.trim() == '' ||
               data.comment.trim() == ''
             ) {
+              this.presentToast('Datos incorrectos o faltantes', 'warning');
               return false;
             }
-            this.opinionService.addOpinion(
-              {
-                calification: parseFloat(data.calification),
-                comment: data.comment,
-                name: data.name,
+            this.confirmationDialog(
+              '¿Está seguro de añadir la opinión?',
+              () => {
+                this.opinionService.addOpinion(
+                  {
+                    calification: parseFloat(data.calification),
+                    comment: data.comment,
+                    name: data.name,
+                  },
+                  this.product!
+                );
+                let sum = 0;
+                this.product!.opinions.forEach((opinion) => {
+                  sum += opinion.calification;
+                });
+                this.product!.calification =
+                  sum / this.product!.opinions.length;
+                this.productService.updateProduct(this.product!);
+                this.presentToast('Opinión añadida', 'success');
+                alert.dismiss();
               },
-              this.product!
+              (respuesta: any) => {
+                if (respuesta.role === 'cancel')
+                  this.presentToast('Operación cancelada', 'warning');
+              }
             );
-            let sum = 0;
-            this.product!.opinions.forEach((opinion) => {
-              sum += opinion.calification;
-            });
-            this.product!.calification = sum / this.product!.opinions.length;
-            this.productService.updateProduct(this.product!);
-            return true;
+            return false;
           },
         },
       ],
     });
     alert.present();
+  }
+
+  private async presentToast(
+    message: string,
+    color: 'success' | 'danger' | 'warning'
+  ) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 500,
+      color,
+    });
+    toast.present();
+  }
+
+  private async confirmationDialog(
+    header: string,
+    handler?: Function,
+    dismissFunction?: Function
+  ) {
+    const alert = await this.alertController.create({
+      header,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentToast('Operación cancelada', 'warning');
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          cssClass: 'primary',
+          handler: () => {
+            if (handler) handler();
+          },
+        },
+      ],
+    });
+    alert.present();
+    alert.onDidDismiss().then((respuesta) => {
+      if (dismissFunction) dismissFunction(respuesta);
+    });
   }
 }

@@ -3,7 +3,12 @@ import { IonRatingStarsModule } from 'ion-rating-stars';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonSearchbar, IonicModule } from '@ionic/angular';
+import {
+  AlertController,
+  IonicModule,
+  IonSearchbar,
+  ToastController,
+} from '@ionic/angular';
 
 import { Product } from '../models/product';
 import { ProductService } from '../services/product.service';
@@ -20,7 +25,12 @@ export class Tab2Page {
   products: Product[] = [];
   filteredProducts: Product[] = [];
 
-  constructor(private router: Router, private productService: ProductService) {
+  constructor(
+    private router: Router,
+    private productService: ProductService,
+    private toastController: ToastController,
+    private alertController: AlertController
+  ) {
     this.products = this.productService.getProducts();
     this.filteredProducts = this.products;
   }
@@ -38,9 +48,12 @@ export class Tab2Page {
   }
 
   deleteProduct(id: string) {
-    this.productService.deleteProduct(id);
-    this.products = this.productService.getProducts();
-    this.filter(this.search.value || '');
+    this.confirmationDialog('¿Está seguro de eliminar el producto?', () => {
+      this.productService.deleteProduct(id);
+      this.products = this.productService.getProducts();
+      this.filter(this.search.value || '');
+      this.presentToast('Producto eliminado', 'success');
+    });
   }
 
   private filter(search: string) {
@@ -57,5 +70,49 @@ export class Tab2Page {
     if (event instanceof CustomEvent) {
       this.filter(event.detail.value);
     }
+  }
+
+  private async presentToast(
+    message: string,
+    color: 'success' | 'danger' | 'warning'
+  ) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 500,
+      color,
+    });
+    toast.present();
+  }
+
+  private async confirmationDialog(
+    header: string,
+    handler?: Function,
+    dismissFunction?: Function
+  ) {
+    const alert = await this.alertController.create({
+      header,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentToast('Operación cancelada', 'warning');
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          cssClass: 'primary',
+          handler: () => {
+            if (handler) handler();
+          },
+        },
+      ],
+    });
+    alert.present();
+    alert.onDidDismiss().then((respuesta) => {
+      if (dismissFunction) dismissFunction(respuesta);
+    });
   }
 }

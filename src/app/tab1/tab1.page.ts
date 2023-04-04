@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, ToastController } from '@ionic/angular';
 
 import { Category } from '../models/category';
 import { Product, ProductForm } from '../models/product';
@@ -32,6 +32,8 @@ export class Tab1Page {
     private activatedRoute: ActivatedRoute,
     private categoryService: CategoryService,
     private productService: ProductService,
+    private alertController: AlertController,
+    private toastController: ToastController,
     private router: Router
   ) {
     this.categories = this.categoryService.getCategories();
@@ -70,26 +72,79 @@ export class Tab1Page {
         this.product = this.productService.getProduct(params.get('id')!);
         this.productForm.patchValue(this.product!);
         this.productForm.controls.sku.disable();
+      } else {
+        this.editMode = false;
+        this.productForm.controls.sku.enable();
+        this.productForm.reset();
       }
     });
   }
 
   addProduct() {
-    this.productService.addProduct({
-      ...this.productForm.getRawValue(),
-      calification: 0,
-      opinions: [],
+    this.confirmationDialog('¿Está seguro de agregar el producto?', () => {
+      this.productService.addProduct({
+        ...this.productForm.getRawValue(),
+        calification: 0,
+        opinions: [],
+      });
+      this.productForm.reset();
+      this.presentToast('Producto agregado', 'success');
     });
-    this.productForm.reset();
   }
 
   updateProduct() {
-    this.productService.updateProduct({
-      ...this.productForm.getRawValue(),
-      calification: this.product!.calification,
-      opinions: this.product!.opinions,
+    this.confirmationDialog('¿Está seguro de actualizar el producto?', () => {
+      this.productService.updateProduct({
+        ...this.productForm.getRawValue(),
+        calification: this.product!.calification,
+        opinions: this.product!.opinions,
+      });
+      this.presentToast('Producto actualizado', 'success');
+      this.router.navigate(['tabs', 'lista_productos']);
     });
-    this.productForm.reset();
-    this.router.navigate(['tabs', 'lista_productos']);
+  }
+
+  private async presentToast(
+    message: string,
+    color: 'success' | 'danger' | 'warning'
+  ) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 500,
+      color,
+    });
+    toast.present();
+  }
+
+  private async confirmationDialog(
+    header: string,
+    handler?: Function,
+    dismissFunction?: Function
+  ) {
+    const alert = await this.alertController.create({
+      header,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentToast('Operación cancelada', 'warning');
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          cssClass: 'primary',
+          handler: () => {
+            if (handler) handler();
+          },
+        },
+      ],
+    });
+    alert.present();
+    alert.onDidDismiss().then((respuesta) => {
+      if (dismissFunction) dismissFunction(respuesta);
+    });
   }
 }
