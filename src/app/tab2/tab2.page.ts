@@ -1,5 +1,6 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { IonRatingStarsModule } from 'ion-rating-stars';
 
@@ -11,5 +12,9 @@ import { IonRatingStarsModule } from 'ion-rating-stars';
   imports: [IonicModule, CommonModule, IonRatingStarsModule, NgOptimizedImage],
 })
 export class Tab2Page {
-  constructor() {}
+  constructor(private router: Router) {}
+
+  goToProduct(id: string) {
+    this.router.navigateByUrl(`tabs/detalle_producto/${id}`, { replaceUrl: true});
+  }
 }
