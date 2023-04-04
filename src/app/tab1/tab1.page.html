@@ -5,5 +5,73 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <!-- name: string;
+  price: number;
+  description: string;
+  photo: string;
+  calification: number;
+  category: string;
+  sku: string;
+  opinions: Opinion[]; -->
+  <form>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Sku</ion-label>
+            <ion-input type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Precio</ion-label>
+            <ion-input type="number"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Categoria</ion-label>
+            <ion-select placeholder="Seleccione una categoria">
+              <ion-select-option>Cat1</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Descripci&oacute;n</ion-label>
+            <ion-textarea autoGrow></ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Foto</ion-label>
+            <ion-input type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-end ion-margin-horizontal">
+        <ion-col size="1">
+          <ion-button color="success">
+            <ion-label>Guardar</ion-label>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
