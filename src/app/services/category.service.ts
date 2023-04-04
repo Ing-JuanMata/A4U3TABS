@@ -9,7 +9,7 @@ export class CategoryService {
   private categories: Category[] = [];
   constructor() {
     this.categories = [
-      { id: '1', name: 'Electronicos' },
+      { id: '1', name: 'Electrónicos' },
       { id: '2', name: 'Ropa' },
       { id: '3', name: 'Comida' },
       { id: '4', name: 'Hogar' },

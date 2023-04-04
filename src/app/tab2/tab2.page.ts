@@ -1,8 +1,12 @@
+import { IonRatingStarsModule } from 'ion-rating-stars';
+
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { IonRatingStarsModule } from 'ion-rating-stars';
+
+import { Product } from '../models/product';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-tab2',
@@ -12,16 +16,27 @@ import { IonRatingStarsModule } from 'ion-rating-stars';
   imports: [IonicModule, CommonModule, IonRatingStarsModule, NgOptimizedImage],
 })
 export class Tab2Page {
-  constructor(private router: Router) {}
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+
+  constructor(private router: Router, private productService: ProductService) {
+    this.products = this.productService.getProducts();
+    this.filteredProducts = this.products;
+  }
 
   goToProduct(id: string) {
-    this.router.navigateByUrl(`tabs/detalle_producto/${id}`, {
-      replaceUrl: true,
-    });
+    this.router.navigate(['tabs', 'detalle_producto', id]);
   }
   editProduct(id: string) {
-    this.router.navigateByUrl(`tabs/editar_producto/${id}`, {
-      replaceUrl: true,
-    });
+    this.router.navigate(['tabs', 'editar_producto', id]);
+  }
+
+  filterProducts(event: Event) {
+    if (event instanceof CustomEvent) {
+      const value = event.detail.value;
+      this.filteredProducts = this.products.filter((product) =>
+        product.name.toLowerCase().includes(value.toLowerCase())
+      );
+    }
   }
 }
