@@ -105,6 +105,7 @@ export class Tab1Page implements OnDestroy {
           ...this.productForm.getRawValue(),
           calification: 0,
           numberOfOpinions: 0,
+          deleted: false,
         })
         .then(() => {
           this.productForm.reset();
@@ -122,8 +123,8 @@ export class Tab1Page implements OnDestroy {
     this.confirmationDialog('¿Está seguro de actualizar el producto?', () => {
       this.productService
         .updateProduct({
+          ...this.product!,
           ...this.productForm.getRawValue(),
-          calification: this.product!.calification,
         })
         .then(() => {
           this.productForm.reset();

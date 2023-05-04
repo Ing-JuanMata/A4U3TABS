@@ -10,6 +10,7 @@ export interface Product {
   category: string;
   sku: string;
   numberOfOpinions?: number;
+  deleted?: boolean;
 }
 
 export interface ProductForm {

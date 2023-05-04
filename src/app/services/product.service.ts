@@ -7,10 +7,10 @@ import {
   addDoc,
   collection,
   collectionData,
-  deleteDoc,
-  doc, query,
+  doc,
+  query,
   updateDoc,
-  where
+  where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -24,15 +24,23 @@ export class ProductService {
   }
 
   getProducts() {
-    return collectionData(this.collection, { idField: 'id' }) as Observable<
-      Product[]
-    >;
+    return collectionData(
+      query(this.collection, where('deleted', '!=', true)),
+      { idField: 'id' }
+    ) as Observable<Product[]>;
   }
 
   getProduct(sku: string) {
-    return collectionData(query(this.collection, where('sku', '==', sku)), {
-      idField: 'id',
-    }) as Observable<Product[]>;
+    return collectionData(
+      query(
+        this.collection,
+        where('sku', '==', sku),
+        where('deleted', '!=', true)
+      ),
+      {
+        idField: 'id',
+      }
+    ) as Observable<Product[]>;
   }
 
   addProduct(product: Product) {
@@ -43,7 +51,7 @@ export class ProductService {
     return updateDoc(doc(this.collection, product.id!!), { ...product });
   }
 
-  deleteProduct(id: string) {
-    return deleteDoc(doc(this.collection, id));
+  async deleteProduct(id: string) {
+    return updateDoc(doc(this.collection, id), { deleted: true });
   }
 }
