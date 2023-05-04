@@ -2,24 +2,50 @@ import { Injectable } from '@angular/core';
 
 import { Opinion } from '../models/opinion';
 import { Product } from '../models/product';
+import {
+  CollectionReference,
+  DocumentData,
+  Firestore,
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OpinionService {
-  constructor() {}
+  private collection: CollectionReference<DocumentData>;
+  constructor(private readonly firestore: Firestore) {
+    this.collection = collection(firestore, 'products');
+  }
+
+  getOpinions(product: Product) {
+    const ref = doc(this.collection, product.id!!);
+    const opinions = collection(ref, 'opinions');
+    return collectionData(opinions, { idField: 'id' }) as Observable<Opinion[]>;
+  }
 
   addOpinion(opinion: Opinion, product: Product) {
-    product.opinions.push(opinion);
+    const ref = doc(this.collection, product.id!!);
+    const opinions = collection(ref, 'opinions');
+    console.log(opinions.path);
+    return addDoc(opinions, opinion);
   }
 
   deleteOpinion(id: string, product: Product) {
-    const index = product.opinions.findIndex((item) => item.id === id);
-    product.opinions.splice(index, 1);
+    const ref = doc(this.collection, product.id!!);
+    const opinions = collection(ref, 'opinions');
+    return deleteDoc(doc(opinions, id));
   }
 
   updateOpinion(opinion: Opinion, product: Product) {
-    const index = product.opinions.findIndex((item) => item.id === opinion.id);
-    product.opinions[index] = opinion;
+    const ref = doc(this.collection, product.id!!);
+    const opinions = collection(ref, 'opinions');
+    return updateDoc(doc(opinions, opinion.id), { ...opinion });
   }
 }

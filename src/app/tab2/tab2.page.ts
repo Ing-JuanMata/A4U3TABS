@@ -1,7 +1,12 @@
 import { IonRatingStarsModule } from 'ion-rating-stars';
 
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, EnvironmentInjector, ViewChild } from '@angular/core';
+import {
+  Component,
+  EnvironmentInjector,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   AlertController,
@@ -12,6 +17,7 @@ import {
 
 import { Product } from '../models/product';
 import { ProductService } from '../services/product.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab2',
@@ -20,7 +26,8 @@ import { ProductService } from '../services/product.service';
   standalone: true,
   imports: [IonicModule, CommonModule, IonRatingStarsModule, NgOptimizedImage],
 })
-export class Tab2Page {
+export class Tab2Page implements OnDestroy {
+  private products$?: Subscription;
   @ViewChild('search') search!: IonSearchbar;
   products: Product[] = [];
   filteredProducts: Product[] = [];
@@ -32,13 +39,13 @@ export class Tab2Page {
     private alertController: AlertController,
     public environmentInjector: EnvironmentInjector
   ) {
-    this.products = this.productService.getProducts();
-    this.filteredProducts = this.products;
-  }
-
-  ionViewDidEnter() {
-    this.products = this.productService.getProducts();
-    this.filteredProducts = this.products;
+    this.products$ = this.productService.getProducts().subscribe((products) => {
+      this.products = products;
+      this.filteredProducts = products;
+      if (this.search) {
+        this.filter(this.search.value || '');
+      }
+    });
   }
 
   goToProduct(id: string) {
@@ -50,10 +57,16 @@ export class Tab2Page {
 
   deleteProduct(id: string) {
     this.confirmationDialog('¿Está seguro de eliminar el producto?', () => {
-      this.productService.deleteProduct(id);
-      this.products = this.productService.getProducts();
-      this.filter(this.search.value || '');
-      this.presentToast('Producto eliminado', 'success');
+      this.productService
+        .deleteProduct(id)
+        .then(() => {
+          this.filter(this.search.value || '');
+          this.presentToast('Producto eliminado', 'success');
+        })
+        .catch((error) => {
+          console.log(error);
+          this.presentToast('Error al eliminar el producto', 'danger');
+        });
     });
   }
 
@@ -69,7 +82,7 @@ export class Tab2Page {
 
   filterProducts(event: Event) {
     if (event instanceof CustomEvent) {
-      this.filter(event.detail.value);
+      this.filter(event.detail.data);
     }
   }
 
@@ -115,5 +128,9 @@ export class Tab2Page {
     alert.onDidDismiss().then((respuesta) => {
       if (dismissFunction) dismissFunction(respuesta);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.products$?.unsubscribe();
   }
 }

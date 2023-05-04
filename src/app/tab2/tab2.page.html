@@ -36,7 +36,7 @@
                     [filledColor]="'orange'"
                     [margin]="2"
                     [size]="20"
-                    [disabled]="false"
+                    [disabled]="true"
                   ></ion-rating-stars>
                 </ion-col>
                 <ion-col size="4">
@@ -49,7 +49,7 @@
                 <ion-button (click)="editProduct(product.sku)" fill="outline">
                   <ion-icon slot="icon-only" name="create"></ion-icon>
                 </ion-button>
-                <ion-button (click)="deleteProduct(product.sku)" color="danger" fill="outline">
+                <ion-button (click)="deleteProduct(product.id!!)" color="danger" fill="outline">
                   <ion-icon slot="icon-only" name="trash"></ion-icon>
                 </ion-button>
                 <ion-button (click)="goToProduct(product.sku)" fill="outline">

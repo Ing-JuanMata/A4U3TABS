@@ -1,13 +1,16 @@
 import { IonRatingStarsModule } from 'ion-rating-stars';
 
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, EnvironmentInjector } from '@angular/core';
+import { Component, EnvironmentInjector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonicModule, ToastController } from '@ionic/angular';
 
 import { Product } from '../models/product';
 import { OpinionService } from '../services/opinion.service';
 import { ProductService } from '../services/product.service';
+import { Subscription } from 'rxjs';
+import { Opinion } from '../models/opinion';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tab3',
@@ -16,8 +19,11 @@ import { ProductService } from '../services/product.service';
   standalone: true,
   imports: [IonicModule, NgOptimizedImage, CommonModule, IonRatingStarsModule],
 })
-export class Tab3Page {
+export class Tab3Page implements OnDestroy {
+  private product$?: Subscription;
+  private opinions$?: Subscription;
   product?: Product;
+  opinions: Opinion[] = [];
 
   constructor(
     private productService: ProductService,
@@ -30,11 +36,26 @@ export class Tab3Page {
   ) {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
-      this.product = this.productService.getProduct(id);
-      if (!this.product) {
-        this.router.navigate(['tabs', 'lista_productos']);
-      }
+      this.product$ = this.productService
+        .getProduct(id)
+        .subscribe((products) => {
+          if (products.length == 0) {
+            this.presentToast('Producto no encontrado', 'danger');
+            this.router.navigate(['tabs', 'lista_productos']);
+            return;
+          }
+          this.product = products[0];
+          this.opinions$ = this.opinionService
+            .getOpinions(this.product)
+            .subscribe((opinions) => {
+              this.opinions = opinions;
+            });
+        });
     }
+  }
+
+  ionViewDidLeave() {
+    this.product$?.unsubscribe();
   }
 
   async addOpinion() {
@@ -83,23 +104,25 @@ export class Tab3Page {
             this.confirmationDialog(
               '¿Está seguro de añadir la opinión?',
               () => {
-                this.opinionService.addOpinion(
-                  {
-                    calification: parseFloat(data.calification),
-                    comment: data.comment,
-                    name: data.name,
-                  },
-                  this.product!
-                );
-                let sum = 0;
-                this.product!.opinions.forEach((opinion) => {
-                  sum += opinion.calification;
-                });
-                this.product!.calification =
-                  sum / this.product!.opinions.length;
-                this.productService.updateProduct(this.product!);
-                this.presentToast('Opinión añadida', 'success');
-                alert.dismiss();
+                this.opinionService
+                  .addOpinion(
+                    {
+                      calification: parseFloat(data.calification),
+                      comment: data.comment,
+                      name: data.name,
+                    },
+                    this.product!
+                  )
+                  .then((data) => {
+                    this.presentToast('Opinión añadida', 'success');
+                    console.log(data);
+                    alert.dismiss();
+                  })
+                  .catch((error) => {
+                    this.presentToast('Error al añadir la opinión', 'danger');
+                    console.log(error);
+                  });
+                return false;
               },
               (respuesta: any) => {
                 if (respuesta.role === 'cancel')
@@ -156,5 +179,9 @@ export class Tab3Page {
     alert.onDidDismiss().then((respuesta) => {
       if (dismissFunction) dismissFunction(respuesta);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.product$?.unsubscribe();
   }
 }

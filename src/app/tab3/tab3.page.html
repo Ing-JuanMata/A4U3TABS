@@ -9,7 +9,8 @@
     <ion-row>
       <ion-col size="3">
         <img
-          [ngSrc]="product?.photo || ''"
+          *ngIf="product"
+          [ngSrc]="product.photo || ''"
           alt="Random"
           height="250"
           width="300"
@@ -45,7 +46,9 @@
                       </ion-col>
                       <ion-col size="2">
                         <p style="font-size: large">
-                          <ion-text color="success">{{product?.price | currency}}</ion-text>
+                          <ion-text color="success"
+                            >{{product?.price | currency}}</ion-text
+                          >
                         </p>
                       </ion-col>
                     </ion-row>
@@ -61,11 +64,16 @@
   <ion-list>
     <ion-list-header>
       <ion-title>Opiniones</ion-title>
-      <ion-button (click)="addOpinion()" expand="block" fill="clear" shape="round">
+      <ion-button
+        (click)="addOpinion()"
+        expand="block"
+        fill="clear"
+        shape="round"
+      >
         Agregar opini&oacute;n
       </ion-button>
     </ion-list-header>
-    <ion-item *ngFor="let opinion of product?.opinions">
+    <ion-item *ngFor="let opinion of opinions">
       <ion-label>{{opinion.name}}</ion-label>
       <ion-label>
         <ion-rating-stars

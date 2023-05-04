@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
-import { Opinion } from './opinion';
 
 export interface Product {
+  id?: string;
   name: string;
   price: number;
   description: string;
@@ -9,7 +9,7 @@ export interface Product {
   calification: number;
   category: string;
   sku: string;
-  opinions: Opinion[];
+  numberOfOpinions?: number;
 }
 
 export interface ProductForm {
